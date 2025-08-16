@@ -1,34 +1,33 @@
-// POST /api/confirm-reveal { gameId, clientId, dare, question }
-// Finalize: identify loser, store dare + question (simple structure)
-import { getGame, putGame, ok, bad } from './_store.js';
+const store = require('./_store');
 
-export async function handler(event) {
-if (event.httpMethod !== 'POST') return bad('POST required', 405);
-const { gameId, clientId, dare, question } = JSON.parse(event.body || '{}');
-if (!gameId || !clientId) return bad('missing fields');
+exports.handler = async (event) => {
+try {
+if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+const { gameId, dare, question } = JSON.parse(event.body || '{}');
+const game = store.getGame(gameId);
+if (!game) return { statusCode: 404, body: JSON.stringify({ error: 'game not found' }) };
 
-const game = await getGame(gameId);
-if (!game) return bad('game not found', 404);
-
-// Ensure caller is penultimate (i.e., they already confirmed green)
-const greens = game.names.filter(n => game.taps[n].state === 'green');
-const mine = game.names.find(n => game.taps[n].clientId === clientId && game.taps[n].state === 'green');
-const remaining = game.names.filter(n => game.taps[n].state !== 'green');
-
-if (!mine) return bad('only confirmed player can reveal');
-if (remaining.length !== 1) return bad('not ready to reveal');
+game.dare = String(dare || '').slice(0, 200);
+// question = { subject, text, kind, options: [A,B,(C?)] } (2–3 options)
+if (question && question.subject && question.text && (question.kind === 'yesno' || question.kind === 'open')) {
+const opts = Array.isArray(question.options) ? question.options.filter(x => String(x||'').trim()).slice(0,3) : [];
+if ((question.kind === 'yesno' && opts.length === 0) || (question.kind === 'open' && opts.length < 2)) {
+return { statusCode: 400, body: JSON.stringify({ error: 'invalid options' }) };
+}
+game.question = {
+subject: String(question.subject),
+text: String(question.text).slice(0, 120),
+kind: question.kind,
+options: question.kind === 'yesno' ? ['Yes', 'No'] : opts.slice(0,3)
+};
+} else {
+game.question = null;
+}
 
 game.revealed = true;
-game.loser = remaining[0];
-game.dare = String(dare || '').slice(0, 200);
-// store a minimal question payload (your UI can format the WhatsApp text)
-game.question = question || null;
 
-await putGame(game);
-return ok({
-gameId: game.id,
-loser: game.loser,
-dare: game.dare,
-question: game.question
-});
+return { statusCode: 200, body: JSON.stringify(store.toState(game)) };
+} catch (e) {
+return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
 }
+};
