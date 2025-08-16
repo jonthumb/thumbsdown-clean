@@ -1,14 +1,35 @@
 [build]
 publish = "."
-functions = "netlify/functions"
 
-# Optional caching rules (good for your HTML refresh issue earlier)
-[[headers]]
-for = "/*.html"
-[headers.values]
-Cache-Control = "no-cache, no-store, must-revalidate"
+[functions]
+directory = "netlify/functions"
 
-[[headers]]
-for = "/*"
-[headers.values]
-Cache-Control = "public, max-age=0, must-revalidate"
+[[redirects]]
+from = "/api/game"
+to = "/.netlify/functions/game"
+status = 200
+
+[[redirects]]
+from = "/api/state"
+to = "/.netlify/functions/state"
+status = 200
+
+[[redirects]]
+from = "/api/tap"
+to = "/.netlify/functions/tap"
+status = 200
+
+[[redirects]]
+from = "/api/confirmTap"
+to = "/.netlify/functions/confirmTap"
+status = 200
+
+[[redirects]]
+from = "/api/reveal"
+to = "/.netlify/functions/reveal"
+status = 200
+
+[[redirects]]
+from = "/api/confirmReveal"
+to = "/.netlify/functions/confirmReveal"
+status = 200
