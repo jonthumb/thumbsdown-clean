@@ -1,173 +1,149 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- BUILD-MARKER: v48 -->
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Thumbs Down · v48</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Thumbs Down · v1</title>
 <meta name="theme-color" content="#111111"/>
 
-<!-- Social preview -->
-<meta property="og:title" content="Thumbs Down" />
-<meta property="og:description" content="Tap fast. Last one down faces a task." />
-<meta property="og:type" content="website" />
-<meta property="og:image" content="/Thumbs Down.png" />
-<meta property="og:url" content="https://thumbsdown.netlify.app/" />
+<meta property="og:title" content="Thumbs Down"/>
+<meta property="og:description" content="Tap fast. Last one down faces a task."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="/Thumbs Down.png"/>
+<meta property="og:url" content=""/>
 
 <style>
 :root{
---cream:#F7F1E6;
---ink:#0F0F10;
---box:#111214;
---accent-2:#1b1d20;
+--cream:#F7F1E6; --ink:#0F0F10; --box:#111214;
+--muted:#a9adb6; --accent:#2c2f34; --accent-2:#1b1d20;
 --radius:16px;
-
---grey:#cfd3d9;
---red:#e53935;
---amber:#ffb300;
---green:#2e7d32;
-
-/* emoji colorizing (approx) */
---grey-filter: grayscale(1) brightness(.9);
---red-filter: hue-rotate(-10deg) saturate(1.5) brightness(1);
---amber-filter: hue-rotate(25deg) saturate(1.7) brightness(1.05);
---green-filter: hue-rotate(95deg) saturate(1.2) brightness(1.05);
+--red:#e53935; --amber:#ffb300; --green:#21c063;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-margin:0;
-font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-background:var(--cream);
-color:var(--ink);
--webkit-font-smoothing:antialiased;
--moz-osx-font-smoothing:grayscale;
-}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-/* Header / logo row (same layout/feel) */
-header{
-max-width:680px; margin:16px auto 10px; padding:0 16px;
-display:flex; align-items:flex-end; gap:14px; flex-wrap:nowrap;
-}
-.logo-mark{ font-size:36px; line-height:1; transform:rotate(180deg); filter:var(--green-filter); }
-.title-wrap{ display:flex; flex-direction:column; gap:6px; min-width:0; flex:1; }
-.brand{ display:flex; align-items:baseline; gap:10px; white-space:nowrap; overflow:hidden; }
-.brand h1{ margin:0; font-weight:800; letter-spacing:.2px; font-size:clamp(22px, 6.3vw, 34px); }
-.tag{ margin:0; color:#2b2e31; font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; font-style:italic; font-size:clamp(13px, 3.2vw, 16px); text-align:right; opacity:.9; }
+/* header */
+header{max-width:680px;margin:16px auto 10px;padding:0 16px;display:flex;align-items:flex-end;gap:14px}
+.logo-mark{font-size:36px;line-height:1;transform:rotate(180deg);filter:hue-rotate(90deg) saturate(1.2)}
+.title-wrap{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap;overflow:hidden}
+.brand h1{margin:0;font-weight:800;letter-spacing:.2px;font-size:clamp(22px,6.3vw,34px)}
+.tag{margin:0;color:#2b2e31;font-style:italic;font-size:clamp(13px,3.2vw,16px);opacity:.9}
 
-/* Main card */
-.card{
-max-width:680px; margin:0 auto 18px;
-background:linear-gradient(180deg, var(--box), var(--accent-2)); color:#fff;
-border-radius:var(--radius); box-shadow:0 10px 30px rgba(0,0,0,.25); padding:16px;
-}
+/* card */
+.card{max-width:680px;margin:0 auto 18px;background:linear-gradient(180deg,var(--box),var(--accent-2));color:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:16px}
 
-/* Host setup */
+/* host setup */
 .hint{color:#d0d3d8;font-size:13px;margin:4px 0 10px}
-.names-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-.names-grid input{
-width:100%; border-radius:10px; background:#1a1c20; color:#fff;
-border:1px solid #2b2d31; padding:10px 12px; font-size:15px;
-}
-.row{ display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:10px; }
-.btn{ appearance:none; border:0; border-radius:10px; padding:10px 14px; font-weight:700; font-size:14px; cursor:pointer; }
-.btn.primary{ background:#21c063; color:#05230f; }
-.btn.ghost{ background:#24262b; color:#e6e8ec; }
-.btn.small{ padding:8px 12px; font-size:13px }
+.names-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.names-grid input{width:100%;border-radius:10px;background:#1a1c20;color:#fff;border:1px solid #2b2d31;padding:10px 12px;font-size:15px}
+.row{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
+.btn{appearance:none;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;cursor:pointer}
+.btn.primary{background:#21c063;color:#05230f}.btn.ghost{background:#24262b;color:#e6e8ec}.btn.small{padding:8px 12px;font-size:13px}
 
-/* Table */
-.table-area{ margin-top:12px; }
-.thumbs{ display:grid; grid-template-columns:repeat(5,1fr); gap:8px; justify-items:center; align-items:center; }
-.person{ display:flex; flex-direction:column; align-items:center; gap:2px; }
-.name{ margin-top:4px; font-size:12px; color:#cfd3d9; text-align:center; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* thumbs grid */
+.table-area{margin-top:12px}
+.thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;justify-items:center;align-items:center}
+.person{display:flex;flex-direction:column;align-items:center;gap:2px}
+.thumb{font-size:34px;line-height:1;background:transparent;border:0;cursor:pointer;transition:transform .22s ease,opacity .2s ease, filter .2s ease}
+.name{margin-top:4px;font-size:12px;color:#cfd3d9;text-align:center;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.locked{opacity:.6;cursor:default}
+.wobble{animation:w .25s}@keyframes w{0%{transform:translateX(0)}25%{transform:translateX(-2px)}50%{transform:translateX(2px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
+.dot{width:8px;height:8px;border-radius:50%;margin-top:4px}
 
-.thumb{
-font-size:34px; line-height:1; background:transparent; border:0; cursor:pointer;
-transition: transform .22s ease, opacity .2s ease, filter .15s ease;
-filter: drop-shadow(0 1px 0 rgba(0,0,0,.35));
-}
-.thumb.up { transform:none; filter:var(--grey-filter) drop-shadow(0 1px 0 rgba(0,0,0,.35)); }
-.thumb.down-r { transform:rotate(180deg); filter:var(--red-filter) drop-shadow(0 1px 0 rgba(0,0,0,.35)); }
-.thumb.down-a { transform:rotate(180deg); filter:var(--amber-filter)drop-shadow(0 1px 0 rgba(0,0,0,.35)); }
-.thumb.down-g { transform:rotate(180deg); filter:var(--green-filter)drop-shadow(0 1px 0 rgba(0,0,0,.35)); }
-.thumb.locked { opacity:.65; cursor:default }
+/* colors for states */
+.state-up .thumb{filter:grayscale(1) brightness(.9)}
+.state-pending .thumb{filter:sepia(1) saturate(4) hue-rotate(350deg)} /* amber tint */
+.state-confirmed .thumb{filter:hue-rotate(90deg) saturate(1.2)} /* green */
 
-@keyframes wobble { 0%{transform:translateX(0)} 25%{transform:translateX(-4px) rotate(180deg)} 75%{transform:translateX(4px) rotate(180deg)} 100%{transform:translateX(0) rotate(180deg)} }
-.wobble{ animation:wobble .25s linear 1; }
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.sheet{width:100%;max-width:680px;background:#0f1013;color:#fff;border-radius:16px 16px 12px 12px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.sheet h3{margin:0 0 8px;font-size:18px}.sheet p{margin:0 0 10px;color:#cdd2d8;font-size:14px}
+.sheet textarea,.sheet select,.sheet input{width:100%;background:#181a1e;border:1px solid #2a2c31;color:#fff;border-radius:12px;padding:10px;font-size:14px}
+.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
 
-/* Punisher modal */
-.modal{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:flex-end; justify-content:center; padding:16px; }
-.modal.show{ display:flex }
-.sheet{ width:100%; max-width:680px; background:#0f1013; color:#fff; border-radius:16px 16px 12px 12px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.45); }
-.sheet h3{ margin:0 0 8px; font-size:18px }
-.sheet p{ margin:0 0 10px; color:#cdd2d8; font-size:14px }
-.sheet textarea{ width:100%; min-height:80px; background:#181a1e; border:1px solid #2a2c31; color:#fff; border-radius:12px; padding:10px; font-size:14px; }
-.actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:10px }
+/* toast */
+#toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#111;color:#fff;padding:8px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:.95}
 
-/* Toast */
-#toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%); background:#111; color:#fff; padding:8px 12px; border-radius:8px; opacity:0; pointer-events:none; transition:opacity .2s }
-#toast.show{ opacity:.95 }
-
-/* Small screens */
-@media (max-width:400px){
-.names-grid{ grid-template-columns:1fr }
-.thumbs{ grid-template-columns:repeat(4,1fr) }
-}
+@media (max-width:400px){.names-grid{grid-template-columns:1fr}.thumbs{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
 <div class="logo-mark" aria-hidden="true">👎</div>
 <div class="title-wrap">
 <div class="brand"><h1>THUMBS&nbsp;DOWN</h1></div>
-<p class="tag">Tap fast. Last one down faces a task. · <span id="vtag">v48</span></p>
+<p class="tag">Tap fast. Last one down faces a task.</p>
 </div>
 </header>
 
-<!-- CARD -->
 <main class="card">
-<!-- HOST SETUP -->
 <div id="host-setup">
-<div class="hint">Add up to 10 friends</div>
+<div class="hint">Add up to 10 friends <span id="ver"></span></div>
 <div class="names-grid" id="nameInputs"></div>
 <div class="row">
-<button class="btn ghost small" id="resetBtn" type="button" aria-label="Reset">Reset</button>
-<button class="btn primary small" id="confirmBtn" type="button" aria-label="Confirm">Confirm</button>
+<button class="btn ghost small" id="resetBtn" type="button">Reset</button>
+<button class="btn primary small" id="confirmBtn" type="button">Confirm</button>
 </div>
 </div>
 
-<!-- TABLE -->
 <div class="table-area" id="tableArea" hidden>
 <div class="thumbs" id="thumbs"></div>
 </div>
 </main>
 
-<!-- PUNISHER MODAL -->
+<!-- Punisher modal -->
 <div class="modal" id="punisherModal" aria-hidden="true">
 <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="punishTitle">
 <h3 id="punishTitle">Congratulations — you’re the Punisher</h3>
-<p id="punishText">The person who didn’t tap their name is <strong id="loserName">TBD</strong> and must face a task. Now set their dare or task below.</p>
-<textarea id="dareText" maxlength="200" placeholder="Type the dare or task (max 200 chars)"></textarea>
+<p>The loser is <strong id="loserName">TBD</strong>. Set their dare and (optional) escape question.</p>
+
+<label>Dare / Task</label>
+<textarea id="dareText" maxlength="200" placeholder="Type the dare (max 200)"></textarea>
+
+<div style="margin-top:10px">
+<label>Question subject (one of the players)</label>
+<select id="qSubject"></select>
+</div>
+
+<div style="margin-top:10px">
+<label>Choose a question (or pick “Make my own”)</label>
+<select id="qSelect"></select>
+</div>
+
+<div id="ownWrap" style="display:none;margin-top:10px">
+<input id="ownQ" maxlength="50" placeholder="Your own question (max 50)"/>
+</div>
+
+<div id="answersWrap" style="margin-top:10px">
+<label id="answerLabel">Options</label>
+<input id="optA" maxlength="60" placeholder="Answer A (required)"/>
+<input id="optB" maxlength="60" placeholder="Answer B (required)"/>
+<input id="optC" maxlength="60" placeholder="Answer C (optional)"/>
+</div>
+
 <div class="actions">
-<button class="btn ghost" id="closePunisher" type="button">Cancel</button>
-<button class="btn primary" id="sharePunisher" type="button">Share back to your group</button>
+<button class="btn ghost" id="closePunisher">Cancel</button>
+<button class="btn primary" id="sharePunisher">Share back to group</button>
 </div>
 </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-// ---------- tiny helpers ----------
 const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const version = 'v1';
+$("#ver").textContent = '· ' + version;
+
+// toast
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
 
-// persistent device id (one tap per device per game)
+// client id
 function getClientId(){
 const k='td-client-id';
 let v=localStorage.getItem(k);
@@ -176,90 +152,227 @@ return v;
 }
 const clientId = getClientId();
 
-// make 10 inputs (no validation attributes -> no browser pattern errors)
+// questions catalogue
+const QUESTIONS = [
+{text:"What is their middle name?", kind:"open"},
+{text:"What year were they born?", kind:"open"},
+{text:"What is their current job title?", kind:"open"},
+{text:"What is their favourite film?", kind:"open"},
+{text:"Do they have any siblings?", kind:"yesno"},
+{text:"Have they run a marathon?", kind:"yesno"},
+{text:"What is their pet's name?", kind:"open"},
+{text:"What city were they born in?", kind:"open"},
+{text:"Are they left-handed?", kind:"yesno"},
+{text:"What is their favourite sport?", kind:"open"},
+{text:"Do they have a driving licence?", kind:"yesno"},
+{text:"What is their favourite cuisine?", kind:"open"},
+{text:"Have they lived abroad?", kind:"yesno"},
+{text:"What is their go-to karaoke song?", kind:"open"},
+{text:"Do they drink coffee?", kind:"yesno"},
+{text:"What is the name of their first school?", kind:"open"},
+{text:"Do they play a musical instrument?", kind:"yesno"},
+{text:"What is their mother’s first name?", kind:"open"},
+{text:"What is their father’s first name?", kind:"open"},
+{text:"What is their dog’s breed?", kind:"open"}
+];
+
 const nameInputsEl = $("#nameInputs");
 for (let i=0;i<10;i++){
-const inp = document.createElement('input');
-inp.type = 'text'; // no pattern, no required
-inp.inputMode = 'text';
-inp.placeholder = `Name ${i+1}`;
-inp.autocapitalize = 'words';
+const inp=document.createElement('input');
+inp.type='text'; inp.placeholder=`Name ${i+1}`; inp.autocapitalize='words';
 nameInputsEl.appendChild(inp);
 }
 
-// ---- network wrappers (align with your functions) ----
+let current = null; // server state
+
+// --- API helpers ---
 async function apiCreate(names){
-const r = await fetch('/api/game',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({names})});
+const r = await fetch('/api/game',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({names})});
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'create failed'); return d;
 }
 async function apiState(gameId){
-const r = await fetch(`/api/state?gameId=${encodeURIComponent(gameId)}`);
-const d = await r.json(); if(!r.ok) throw new Error(d.error||'state failed'); return d;
+const r = await fetch(`/api/state?gameId=${encodeURIComponent(gameId)}`); const d = await r.json(); if(!r.ok) throw new Error(d.error||'state failed'); return d;
 }
 async function apiTap(gameId,name){
-const r = await fetch('/api/tap',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({gameId,name,clientId})});
+const r = await fetch('/api/tap',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId,name,clientId})});
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'tap failed'); return d;
 }
 async function apiConfirmTap(gameId,name){
-const r = await fetch('/api/confirmTap',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({gameId,name,clientId})});
-const d = await r.json(); if(!r.ok) throw new Error(d.error||'confirmTap failed'); return d;
+const r = await fetch('/api/confirm-tap',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId,name,clientId})});
+const d = await r.json(); if(!r.ok) throw new Error(d.error||'confirm failed'); return d;
 }
-async function apiReveal(gameId,dare){
-const r = await fetch('/api/reveal',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({gameId,dare})});
+async function apiPrepareReveal(gameId){
+const r = await fetch('/api/prepare-reveal',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId})});
+const d = await r.json(); if(!r.ok) throw new Error(d.error||'prepare failed'); return d;
+}
+async function apiConfirmReveal(gameId,dare,question){
+const r = await fetch('/api/confirm-reveal',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId,dare,question})});
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'reveal failed'); return d;
 }
-async function apiConfirmReveal(gameId){
-const r = await fetch('/api/confirmReveal',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({gameId})});
-const d = await r.json(); if(!r.ok) throw new Error(d.error||'confirmReveal failed'); return d;
-}
 
-// ---- state ----
-let current = null; // { gameId, names, tapped:[], confirmed:[], loser?, dare? }
-
-// ---- UI render ----
+// --- render ---
 function render(state){
 current = state;
 $("#tableArea").hidden = false;
-
-const wrap = $("#thumbs");
-wrap.innerHTML = '';
+const wrap = $("#thumbs"); wrap.innerHTML='';
 
 state.names.forEach(n=>{
-const cell = document.createElement('div'); cell.className='person';
+const isPending = state.pending.includes(n);
+const isConfirmed = state.confirmed.includes(n);
 
-// decide visual state
-const isConfirmed = (state.confirmed||[]).includes(n);
-const isTapped = (state.tapped||[]).includes(n);
-const btn = document.createElement('button'); btn.type='button'; btn.className='thumb';
-
-if(isConfirmed){ btn.textContent='👎'; btn.classList.add('down-g'); btn.classList.add('locked'); }
-else if(isTapped){ btn.textContent='👎'; btn.classList.add('down-r'); }
-else { btn.textContent='👍'; btn.classList.add('up'); }
-
-btn.addEventListener('click', ()=> onTap(n, btn));
-
+const cell = document.createElement('div'); cell.className='person ' + (isConfirmed?'state-confirmed': isPending?'state-pending':'state-up');
+const btn = document.createElement('button'); btn.className='thumb'; btn.type='button'; btn.textContent = isPending||isConfirmed ? '👎' : '👍';
 const label = document.createElement('div'); label.className='name'; label.textContent=n;
+
+btn.addEventListener('click', ()=> onTap(n, btn, cell));
+
 cell.appendChild(btn); cell.appendChild(label);
 wrap.appendChild(cell);
 });
 
-applyDeviceLock(state.gameId);
+// When only one 'up' remains, fill punisher modal subject list
+const remaining = state.names.filter(n => !state.tapped.includes(n));
+if (remaining.length === 1) {
+$("#loserName").textContent = remaining[0];
+const sub = $("#qSubject"); sub.innerHTML='';
+state.names.forEach(n => {
+if (n !== remaining[0]) {
+const o=document.createElement('option'); o.value=n; o.textContent=n; sub.appendChild(o);
 }
-
-function applyDeviceLock(gameId){
-const confirmedName = localStorage.getItem(`td-lock-${gameId}`);
-if(confirmedName){
-// Fully lock all thumbs; but let only confirmed one stay green; others wobble on attempt
-$$('.thumb').forEach((b,idx)=>{
-b.disabled = false; // keep clickable solely to wobble feedback
-b.addEventListener('click', (e)=>{
-if(!b.classList.contains('down-g')){ b.classList.add('wobble'); setTimeout(()=>b.classList.remove('wobble'),250); }
-}, { once:true });
 });
+const select=$("#qSelect"); select.innerHTML='';
+QUESTIONS.forEach((q,idx)=>{ const o=document.createElement('option'); o.value=idx; o.textContent=q.text; select.appendChild(o); });
+const own=document.createElement('option'); own.value='own'; own.textContent='Make my own (max 50 chars)';
+select.appendChild(own);
 }
 }
 
-// ---- actions ----
+async function onTap(name, btn, cell){
+if(!current) return;
+const gameId = current.gameId;
+
+// if already confirmed on this device, lock out
+if (localStorage.getItem(`td-lock-${gameId}`)) { btn.classList.add('wobble'); setTimeout(()=>btn.classList.remove('wobble'),250); return; }
+
+// optimistic amber
+btn.textContent='👎'; cell.classList.remove('state-up','state-confirmed'); cell.classList.add('state-pending');
+try{
+const state = await apiTap(gameId,name);
+render(state);
+
+// show confirm/share for the tapped player (inline prompt)
+promptConfirm(name);
+}catch(e){
+toast(e.message);
+}
+}
+
+function promptConfirm(name){
+// simple share then confirm
+const url = location.origin + `/?g=${encodeURIComponent(current.gameId)}`;
+const text = `I tapped in Thumbs Down. Open to tap yours: ${url}`;
+const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
+const doConfirm = async () => {
+try{
+const s = await apiConfirmTap(current.gameId, name);
+localStorage.setItem(`td-lock-${current.gameId}`, name);
+render(s);
+
+// If only one remains, open punisher modal for whoever just confirmed (penultimate)
+const remaining = s.names.filter(n=>!s.tapped.includes(n));
+if (remaining.length === 1) {
+$("#punisherModal").classList.add('show');
+$("#punisherModal").setAttribute('aria-hidden','false');
+}
+}catch(e){ toast(e.message); }
+};
+
+// Try share API first (user still must confirm)
+if (navigator.share) {
+navigator.share({ title:'Thumbs Down', text, url }).finally(doConfirm);
+} else {
+window.open(wa, '_blank'); setTimeout(doConfirm, 400);
+}
+}
+
+// modal behaviour
+$("#closePunisher").addEventListener('click', ()=>{
+$("#punisherModal").classList.remove('show');
+$("#punisherModal").setAttribute('aria-hidden','true');
+});
+$("#qSelect").addEventListener('change', (e)=>{
+const own = e.target.value === 'own';
+$("#ownWrap").style.display = own ? 'block' : 'none';
+const idx = parseInt(e.target.value,10);
+const kind = (!isNaN(idx) && QUESTIONS[idx]) ? QUESTIONS[idx].kind : (own ? 'open' : 'open');
+$("#answerLabel").textContent = kind === 'yesno' ? 'Answer (Yes/No auto-set)' : 'Options';
+$("#answersWrap").style.display = 'block';
+if (kind === 'yesno') {
+$("#optA").value = 'Yes'; $("#optB").value = 'No'; $("#optC").value = '';
+} else {
+if ($("#optA").value==='Yes' && $("#optB").value==='No') { $("#optA").value=''; $("#optB").value=''; }
+}
+});
+
+$("#sharePunisher").addEventListener('click', async ()=>{
+if(!current) return;
+const dare = ($("#dareText").value || '').trim();
+
+const sel = $("#qSelect").value;
+let question = null;
+if (sel === 'own') {
+const text = ($("#ownQ").value||'').trim().slice(0,50);
+if (text) {
+const a=($("#optA").value||'').trim(), b=($("#optB").value||'').trim(), c=($("#optC").value||'').trim();
+if (a && b) {
+question = { subject: $("#qSubject").value, text, kind: 'open', options: [a,b].concat(c? [c] : []) };
+}
+}
+} else {
+const idx = parseInt(sel,10);
+if (!isNaN(idx) && QUESTIONS[idx]) {
+const q = QUESTIONS[idx];
+if (q.kind === 'yesno') {
+question = { subject: $("#qSubject").value, text: q.text, kind: 'yesno', options: ['Yes','No'] };
+} else {
+const a=($("#optA").value||'').trim(), b=($("#optB").value||'').trim(), c=($("#optC").value||'').trim();
+if (a && b) {
+question = { subject: $("#qSubject").value, text: q.text, kind: 'open', options: [a,b].concat(c? [c] : []) };
+}
+}
+}
+}
+
+try{
+const s = await apiConfirmReveal(current.gameId, dare, question);
+$("#punisherModal").classList.remove('show');
+$("#punisherModal").setAttribute('aria-hidden','true');
+
+// compose share
+const url = location.origin + `/?g=${encodeURIComponent(s.gameId)}&reveal=1`;
+let lines = [`Thumbs Down — result:`,
+`Loser: ${s.loser || 'unknown'}`,
+`Task: ${s.dare || '(none)'}`];
+if (s.question) {
+lines.push(`Escape question about ${s.question.subject}: ${s.question.text}`);
+if (s.question.kind === 'open') {
+const opts = (s.question.options||[]).filter(Boolean);
+if (opts.length) lines.push(`Options: ${opts.map((o,i)=>String.fromCharCode(65+i)+') '+o).join(' ')}`);
+} else {
+lines.push(`Answer Yes/No.`);
+}
+lines.push(`Reply in this chat; the subject will confirm if it’s right.`);
+}
+lines.push(`Open: ${url}`);
+const text = lines.join('\n');
+const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
+if (navigator.share) navigator.share({ title:'Thumbs Down', text }).catch(()=>{ location.href = wa; });
+else location.href = wa;
+
+}catch(e){ toast(e.message); }
+});
+
+// create / reset
 $("#confirmBtn").addEventListener('click', async ()=>{
 try{
 const names = [...nameInputsEl.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean).slice(0,10);
@@ -267,112 +380,20 @@ if(names.length<3){ toast('Add at least 3 names'); return; }
 const { gameId, state } = await apiCreate(names);
 $("#host-setup").style.display='none';
 render(state);
-toast('Game created. Tap your name to start!');
 history.replaceState(null,'',`/?g=${encodeURIComponent(gameId)}`);
+// host taps their own then shares to confirm
 }catch(e){ toast(e.message); }
 });
+$("#resetBtn").addEventListener('click', ()=>{ [...nameInputsEl.querySelectorAll('input')].forEach(i=>i.value=''); localStorage.clear(); location.href='/' });
 
-$("#resetBtn").addEventListener('click', ()=>{
-[...nameInputsEl.querySelectorAll('input')].forEach(i=> i.value='');
-localStorage.clear();
-location.href='/';
-});
-
-async function onTap(name, el){
-if(!current) return;
-const gameId = current.gameId;
-
-// if already confirmed on this device, don't allow
-if(localStorage.getItem(`td-lock-${gameId}`)){ el.classList.add('wobble'); setTimeout(()=>el.classList.remove('wobble'),250); return; }
-
-try{
-// send initial tap -> server marks "tapped" (red)
-await apiTap(gameId, name);
-el.textContent='👎'; el.className='thumb down-r';
-
-// Open share; while open, show amber
-await sleep(80);
-el.className='thumb down-a';
-
-const shareText = `I tapped in Thumbs Down! (game ${gameId})`;
-const url = location.origin + `/?g=${encodeURIComponent(gameId)}`;
-
-// Try native share, fallback to WhatsApp
-if(navigator.share){
-await navigator.share({ title:'Thumbs Down', text:shareText, url });
-}else{
-const wa = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + url)}`;
-window.location.href = wa;
-// user returns afterwards
-}
-
-// After share, confirm on server -> turn green & lock this device
-const state = await apiConfirmTap(gameId, name);
-render(state);
-localStorage.setItem(`td-lock-${gameId}`, name);
-
-// If only one remains, prep punisher
-const remaining = state.names.filter(n=>!(state.confirmed||[]).includes(n));
-if(remaining.length===1){
-const loser = remaining[0];
-$("#loserName").textContent = loser;
-$("#punisherModal").classList.add('show');
-$("#punisherModal").setAttribute('aria-hidden','false');
-}
-
-}catch(e){
-toast(e.message||'Tap failed');
-// revert visual if needed
-if(el.classList.contains('down-a')){ el.className='thumb down-r'; }
-}
-}
-
-// Punisher modal actions
-$("#closePunisher").addEventListener('click', ()=>{
-$("#punisherModal").classList.remove('show');
-$("#punisherModal").setAttribute('aria-hidden','true');
-});
-
-$("#sharePunisher").addEventListener('click', async ()=>{
-if(!current) return;
-const dare = ($("#dareText").value || '').trim();
-try{
-const revealed = await apiReveal(current.gameId, dare);
-
-// Build WhatsApp / share text
-const url = location.origin + `/?g=${encodeURIComponent(revealed.gameId)}&reveal=1`;
-let text = `Thumbs Down — result:\n\nLoser: ${revealed.loser || 'unknown'}\nTask: ${revealed.dare || '(none)'}\n\nOpen: ${url}`;
-
-if(navigator.share){
-await navigator.share({ title:'Thumbs Down', text: text });
-}else{
-const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
-location.href = wa;
-}
-
-// confirm reveal after sharing
-const state = await apiConfirmReveal(revealed.gameId);
-$("#punisherModal").classList.remove('show');
-$("#punisherModal").setAttribute('aria-hidden','true');
-render(state);
-
-}catch(e){ toast(e.message); }
-});
-
-// ---- hydration on load ----
+// hydrate
 (async function init(){
 const params = new URLSearchParams(location.search);
 const g = params.get('g');
-if(g){
+if (g) {
 $("#host-setup").style.display='none';
-try{
-const state = await apiState(g);
-render(state);
-}catch(e){ toast(e.message); }
+try{ render(await apiState(g)); }catch(e){ toast(e.message); }
 }
-// show version in UI (helps you confirm deploy)
-const vqs = [...params.entries()].find(([k])=>k==='v');
-if(vqs){ $("#vtag").textContent = `v48 • ${vqs[1]}`; }
 })();
 </script>
 </body>
