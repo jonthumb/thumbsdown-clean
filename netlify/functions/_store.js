@@ -1,28 +1,43 @@
-// CommonJS singleton store (in-memory).
-const { v4: uuidv4 } = require('uuid');
+// Persistent storage using Netlify Blobs.
+// No package.json change needed; we use dynamic import so CommonJS works.
 
-const store = {
-games: {},
+async function getStore() {
+const mod = await import('@netlify/blobs');
+// One logical store for all games; strong consistency keeps reads fresh.
+return mod.getStore('td-games', { consistency: 'strong' });
+}
 
-createGame(names) {
-const id = uuidv4();
-// canonical list, trim blanks, unique by case-insensitive key
-const map = new Map();
-names.forEach(n => {
-const name = String(n || '').trim();
-if (!name) return;
-const key = name.toLowerCase();
-if (!map.has(key)) map.set(key, name);
+async function readGame(id) {
+if (!id) return null;
+const store = await getStore();
+return await store.getJSON(`game:${id}`);
+}
+
+async function writeGame(game) {
+const store = await getStore();
+await store.setJSON(`game:${game.gameId}`, game, {
+metadata: { updated: Date.now() }
 });
-const players = Array.from(map.values()).slice(0, 10).map(n => ({
-name: n,
-status: 'up', // 'up' (red) → 'pending' (amber) → 'confirmed' (green)
-deviceId: null, // set when confirmed
-tappedAt: null
-}));
+return game;
+}
 
+async function createGame(names) {
+const id = (globalThis.crypto?.randomUUID?.() ||
+(Date.now() + Math.random().toString(36).slice(2)));
 const game = {
-id,
+gameId: id,
+names,
+tapped: [], // players who tapped (amber)
+confirmed: [], // players who shared/confirmed (green)
+revealed: false,
+dare: null,
+loser: null
+};
+return await writeGame(game);
+}
+
+module.exports = { readGame, writeGame, createGame };
+
 players,
 createdAt: Date.now(),
 revealed: false,
