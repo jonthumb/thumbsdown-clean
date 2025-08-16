@@ -1,12 +1,20 @@
-const { get } = require('./_store');
+// GET /api/state?gameId=...
+import { getGame, ok, bad } from './_store.js';
 
-exports.handler = async (event)=>{
-try{
-const gameId=(event.queryStringParameters||{}).gameId;
-if(!gameId) return resp(400,{error:'missing gameId'});
-const s=get(gameId); if(!s) return resp(404,{error:'game not found'});
-const out={ gameId:s.gameId, names:s.names, tapped:s.tapped, pending:s.pending, revealed:s.revealed, loser:s.loser, dare:s.dare, escape:s.escape||null };
-return resp(200,out);
-}catch(e){ return resp(500,{error:e.message}); }
-};
-function resp(code, body){ return { statusCode:code, headers:{'content-type':'application/json'}, body:JSON.stringify(body) }; }
+export async function handler(event) {
+const gameId = new URLSearchParams(event.rawQuery || '').get('gameId');
+if (!gameId) return bad('missing gameId');
+const game = await getGame(gameId);
+if (!game) return bad('game not found', 404);
+
+return ok({
+gameId: game.id,
+names: game.names,
+tapped: game.names.filter(n => game.taps[n].state !== 'up'),
+states: Object.fromEntries(game.names.map(n => [n, game.taps[n].state])),
+revealed: game.revealed,
+loser: game.loser,
+dare: game.dare,
+question: game.question
+});
+}
