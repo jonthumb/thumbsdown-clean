@@ -20,16 +20,16 @@ to = "/.netlify/functions/tap"
 status = 200
 
 [[redirects]]
-from = "/api/confirmTap"
+from = "/api/confirm-tap"
 to = "/.netlify/functions/confirmTap"
 status = 200
 
 [[redirects]]
-from = "/api/reveal"
-to = "/.netlify/functions/reveal"
+from = "/api/prepare-reveal"
+to = "/.netlify/functions/prepareReveal"
 status = 200
 
 [[redirects]]
-from = "/api/confirmReveal"
+from = "/api/confirm-reveal"
 to = "/.netlify/functions/confirmReveal"
 status = 200
