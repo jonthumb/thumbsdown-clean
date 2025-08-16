@@ -1,47 +1,20 @@
-// POST /api/game { names: string[] }
-import { newId, putGame, ok, bad } from './_store.js';
+const store = require('./_store');
 
-export async function handler(event) {
-if (event.httpMethod !== 'POST') return bad('POST required', 405);
-let names;
+exports.handler = async (event) => {
 try {
-({ names } = JSON.parse(event.body || '{}'));
-} catch { return bad('invalid json'); }
-
-if (!Array.isArray(names) || names.length < 3) return bad('at least 3 names');
-
-// canonicalize names (trim + single spaces)
-names = names.map(n => String(n).trim()).filter(Boolean);
-const id = await newId();
-
-const game = {
-id,
-createdAt: Date.now(),
-names,
-// per-name state: 'up' | 'amber' | 'green'
-taps: Object.fromEntries(names.map(n => [n, { state: 'up', clientId: null, shared: false }])),
-// reveal / punishment block
-revealed: false,
-loser: null,
-dare: null,
-question: null, // { about, type:'yn'|'mc', text, options?:string[] }
-};
-
-await putGame(game);
-
-return ok({ gameId: id, state: toClient(game) });
+if (event.httpMethod !== 'POST') {
+return { statusCode: 405, body: 'Method Not Allowed' };
 }
-
-function toClient(game) {
-// minimal state the UI expects
+const { names } = JSON.parse(event.body || '{}');
+if (!Array.isArray(names) || names.filter(x => String(x||'').trim()).length < 3) {
+return { statusCode: 400, body: JSON.stringify({ error: 'need at least 3 names' }) };
+}
+const game = store.createGame(names);
 return {
-gameId: game.id,
-names: game.names,
-tapped: game.names.filter(n => game.taps[n].state !== 'up'),
-states: Object.fromEntries(game.names.map(n => [n, game.taps[n].state])),
-revealed: game.revealed,
-loser: game.loser,
-dare: game.dare,
-question: game.question
+statusCode: 200,
+body: JSON.stringify({ gameId: game.id, state: store.toState(game) })
 };
+} catch (e) {
+return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
 }
+};
