@@ -1,28 +1,35 @@
-// Prototype in-memory store
-const games = new Map();
-// state: { gameId, names:[], tapped:[], pending:{ [name]:true }, revealed:false,
-// loser:null, dare:null, escape:{ target, qType, questionText, answers? } }
+// _store.js — tiny wrapper around Netlify Blobs (KV)
+import { getStore } from '@netlify/blobs';
 
-function newId(){ return Math.random().toString(36).slice(2,10); }
+const store = getStore({ name: 'thumbsdown', consistency: 'strong' });
 
-function create(names){
-const gameId=newId();
-const state={ gameId, names, tapped:[], pending:{}, revealed:false, loser:null, dare:null, escape:null };
-games.set(gameId,state); return state;
+const key = (id) => `game:${id}`;
+
+export async function getGame(id) {
+return await store.get(key(id), { type: 'json' });
 }
-function get(gameId){ return games.get(gameId) || null; }
 
-function tapPending(gameId, name){
-const g=get(gameId); if(!g) throw new Error('game not found');
-if(!g.names.includes(name)) throw new Error('name not in game');
-if(g.tapped.includes(name)) return g;
-g.pending[name]=true; return g;
+export async function putGame(game) {
+await store.set(key(game.id), JSON.stringify(game));
+return game;
 }
-function confirmTap(gameId, name){
-const g=get(gameId); if(!g) throw new Error('game not found');
-if(!g.names.includes(name)) throw new Error('name not in game');
-if(g.pending[name]) delete g.pending[name];
-if(!g.tapped.includes(name)) g.tapped.push(name);
+
+export async function newId() {
+return (globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+}
+
+// helpers to standardize API responses
+export function ok(data, status = 200) {
+return {
+statusCode: status,
+headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
+body: JSON.stringify(data)
+};
+}
+export function bad(message, status = 400) {
+return ok({ error: message }, status);
+}
+
 return g;
 }
 
