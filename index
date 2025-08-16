@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Thumbs Down</title>
+<meta name="theme-color" content="#111111"/>
+
+<meta property="og:title" content="Thumbs Down" />
+<meta property="og:description" content="Tap fast. Last one down gets a task." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/Thumbs Down.png" />
+<meta property="og:url" content="/" />
+
+<style>
+:root{
+--cream:#F7F1E6; --ink:#0F0F10; --box:#111214; --accent-2:#1b1d20; --radius:16px;
+--amber:#ffb300; --green:#2e7d32; --red:#e53935; --muted:#cfd3d9; --grey:#72757e;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0; background:var(--cream); color:var(--ink);
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+
+/* Header */
+header{max-width:680px;margin:16px auto 10px;padding:0 16px;display:flex;align-items:flex-end;gap:14px}
+.logo-mark{font-size:36px;line-height:1;transform:rotate(180deg);filter:hue-rotate(90deg) saturate(1.2)}
+.title-wrap{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap;overflow:hidden}
+.brand h1{margin:0;font-weight:800;letter-spacing:.2px;font-size:clamp(22px,6.3vw,34px)}
+.tag{margin:0;color:#2b2e31;font-style:italic;font-size:clamp(13px,3.2vw,16px);text-align:right;opacity:.9}
+
+/* Card */
+.card{
+max-width:680px;margin:0 auto 18px;padding:16px;color:#fff;
+background:linear-gradient(180deg,var(--box),var(--accent-2));
+border-radius:var(--radius); box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+/* Host setup */
+.hint{color:#d0d3d8;font-size:13px;margin:4px 0 10px}
+.names-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.names-grid input{
+width:100%; border-radius:10px; background:#1a1c20; color:#fff;
+border:1px solid #2b2d31; padding:10px 12px; font-size:15px;
+}
+.row{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
+.btn{appearance:none;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;cursor:pointer}
+.btn.primary{background:#21c063;color:#05230f}.btn.ghost{background:#24262b;color:#e6e8ec}.btn.small{padding:8px 12px;font-size:13px}
+
+/* Table */
+.table-area{margin-top:12px}
+.thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;justify-items:center;align-items:center}
+.person{display:flex;flex-direction:column;align-items:center;gap:6px}
+.thumb{
+position:relative; display:inline-flex; align-items:center; justify-content:center;
+width:56px;height:56px;border-radius:50%; border:2px solid transparent; background:#0e1014;
+transition:transform .22s ease, opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
+cursor:pointer;
+}
+.thumb .g{font-size:34px;line-height:1;pointer-events:none;transition:transform .22s ease}
+.thumb.up .g{transform:rotate(0deg)}
+.thumb.down .g{transform:rotate(180deg)}
+.thumb.flash{box-shadow:0 0 0 2px var(--red) inset}
+.thumb.pending{border-color:var(--amber); box-shadow:0 0 0 2px rgba(255,179,0,.2)}
+.thumb.confirmed{border-color:var(--green); box-shadow:0 0 0 2px rgba(46,125,50,.25)}
+.thumb.locked{opacity:.75; cursor:default}
+.name{font-size:12px;color:var(--muted);max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+
+/* Notes */
+.note{margin-top:10px;color:#ffde8a;font-size:13px}
+
+/* Modal (Punisher) */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.sheet{width:100%;max-width:680px;background:#0f1013;color:#fff;border-radius:16px 16px 12px 12px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.sheet h3{margin:0 0 8px;font-size:18px}
+.sheet p{margin:0 10px 12px 0;color:#cdd2d8;font-size:14px}
+.sheet label{display:block;margin:10px 0 6px;color:#cdd2d8;font-size:13px}
+.sheet select,.sheet input[type="text"],.sheet textarea{
+width:100%;background:#181a1e;border:1px solid #2a2c31;color:#fff;border-radius:10px;padding:10px;font-size:14px
+}
+.sheet .answers{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+
+/* Toast & wobble */
+#toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#111;color:#fff;padding:8px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:.95}
+@keyframes wobble{0%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+.wobble{animation:wobble .28s ease}
+
+/* Small screens */
+@media (max-width:400px){.names-grid{grid-template-columns:1fr}.thumbs{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo-mark" aria-hidden="true">👎</div>
+<div class="title-wrap">
+<div class="brand"><h1>THUMBS&nbsp;DOWN</h1></div>
+<p class="tag">Tap fast. Last one down faces a task.</p>
+</div>
+</header>
+
+<main class="card">
+<!-- HOST -->
+<div id="host-setup">
+<div class="hint">Add up to 10 friends</div>
+<div class="names-grid" id="nameInputs"></div>
+<div class="row">
+<button class="btn ghost small" id="resetBtn" type="button">Reset</button>
+<button class="btn primary small" id="confirmBtn" type="button">Confirm</button>
+</div>
+</div>
+
+<!-- TABLE -->
+<div class="table-area" id="tableArea" hidden>
+<div class="thumbs" id="thumbs"></div>
+<div id="shareNote" class="note" hidden></div>
+</div>
+</main>
+
+<!-- PUNISHER -->
+<div class="modal" id="punisherModal" aria-hidden="true">
+<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="punishTitle">
+<h3 id="punishTitle">Congratulations — you’re the Punisher</h3>
+<p>Share is required: your reveal only counts after you share back to the WhatsApp group.</p>
+
+<label for="targetPlayer">Who is the question about?</label>
+<select id="targetPlayer"></select>
+
+<label for="questionSelect">Pick a question (or “Make my own”)</label>
+<select id="questionSelect"></select>
+
+<!-- Yes/No area -->
+<div id="ynBlock" hidden>
+<label>Mark the correct answer</label>
+<label><input type="radio" name="yn" value="Yes" checked> Yes</label>
+<label><input type="radio" name="yn" value="No"> No</label>
+</div>
+
+<!-- Custom question -->
+<div id="customBlock" hidden>
+<label for="customQ">Your question (max 50 chars)</label>
+<input id="customQ" type="text" maxlength="50" placeholder="e.g., What’s their middle name?">
+</div>
+
+<!-- Multiple choice -->
+<label id="answersLabel">Answers (A, B, C) — pick which is correct (at least 2 required)</label>
+<div class="answers" id="answersBlock">
+<input id="ansA" type="text" placeholder="Answer A"><label><input type="radio" name="correct" value="A" checked> A</label>
+<input id="ansB" type="text" placeholder="Answer B"><label><input type="radio" name="correct" value="B"> B</label>
+<input id="ansC" type="text" placeholder="Answer C (optional)"><label><input type="radio" name="correct" value="C"> C</label>
+</div>
+
+<label for="dareText">Set the dare / task</label>
+<textarea id="dareText" maxlength="200" placeholder="Type the dare or task (max 200 chars)"></textarea>
+
+<div class="actions">
+<button class="btn ghost" id="closePunisher">Cancel</button>
+<button class="btn primary" id="sharePunisher">Share back to your group</button>
+</div>
+</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+
+// device id + per-game lock
+const clientId = (()=>{const k='td-client-id';try{let v=localStorage.getItem(k);if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random().toString(36).slice(2));localStorage.setItem(k,v);}return v;}catch(_){return 'cid-'+Date.now();}})();
+
+const nameInputsEl=$("#nameInputs"); for(let i=0;i<10;i++){const inp=document.createElement('input');inp.type='text';inp.placeholder=`Name ${i+1}`;inp.autocapitalize='words';nameInputsEl.appendChild(inp);}
+
+let current=null; // { gameId, names, tapped[], pending:{name:true}, revealed, ... }
+
+async function apiCreate(names){const r=await fetch('/api/game',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({names})});const d=await r.json();if(!r.ok) throw new Error(d.error||'create failed');return d;}
+async function apiState(gameId){const r=await fetch(`/api/state?gameId=${encodeURIComponent(gameId)}`);const d=await r.json();if(!r.ok) throw new Error(d.error||'state failed');return d;}
+async function apiTap(gameId,name){
+const r=await fetch('/api/tap',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId,name,clientId})});
+const d=await r.json(); if(!r.ok) throw new Error(d.error||'tap failed'); return d; // { state, shareText }
+}
+async function apiConfirmTap(gameId,name){
+const r=await fetch('/api/confirmTap',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId,name,clientId})});
+const d=await r.json(); if(!r.ok) throw new Error(d.error||'confirm failed'); return d; // { state }
+}
+async function apiPrepareReveal(gameId,payload){
+const r=await fetch('/api/prepareReveal',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId,payload})});
+const d=await r.json(); if(!r.ok) throw new Error(d.error||'prepare failed'); return d; // { state, shareText }
+}
+async function apiConfirmReveal(gameId){
+const r=await fetch('/api/confirmReveal',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({gameId})});
+const d=await r.json(); if(!r.ok) throw new Error(d.error||'reveal failed'); return d; // { state }
+}
+
+function render(state){
+current=state;
+$("#tableArea").hidden=false;
+const wrap=$("#thumbs"); wrap.innerHTML='';
+const pending = state.pending || {};
+state.names.forEach(n=>{
+const isPending = !!pending[n];
+const isDown = state.tapped.includes(n) || isPending;
+const cell=document.createElement('div'); cell.className='person';
+const btn=document.createElement('button'); btn.className='thumb'; btn.type='button';
+btn.classList.add(isDown?'down':'up');
+if(isPending) btn.classList.add('pending'); // amber ring
+if(state.tapped.includes(n)) btn.classList.add('confirmed'); // green ring when locked
+btn.innerHTML = `<span class="g">${isDown?'👎':'👍'}</span>`;
+btn.addEventListener('click',()=>onTap(n,btn));
+const label=document.createElement('div'); label.className='name'; label.textContent=n;
+cell.appendChild(btn); cell.appendChild(label); wrap.appendChild(cell);
+});
+applyDeviceLock(state.gameId);
+maybeOpenPunisher(state);
+}
+
+function applyDeviceLock(gameId){
+const picked = localStorage.getItem(`td-picked-${gameId}`);
+if(picked){
+$$('.thumb').forEach(b=>{
+const locked = !b.classList.contains('confirmed') && !b.classList.contains('pending');
+if(locked){ b.classList.add('locked'); b.onclick = (e)=>{ e.preventDefault(); b.classList.add('wobble'); setTimeout(()=>b.classList.remove('wobble'),280); }; }
+});
+}
+}
+
+function flashRed(el){ el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),260); }
+
+// Question set with type tagging
+const QUESTION_BANK = [
+{ text:"Do they prefer cats?", type:"yn" },
+{ text:"Do they prefer dogs?", type:"yn" },
+{ text:"Are they left-handed?", type:"yn" },
+{ text:"Do they drink coffee daily?", type:"yn" },
+{ text:"What is their middle name?", type:"open" },
+{ text:"What is their job title?", type:"open" },
+{ text:"What company do they work for?", type:"open" },
+{ text:"What city were they born in?", type:"open" },
+{ text:"What’s their favourite football club?", type:"open" },
+{ text:"What’s their usual pub drink?", type:"open" },
+{ text:"What’s their pet’s breed?", type:"open" },
+{ text:"What’s their mum’s first name?", type:"open" },
+{ text:"What’s their dad’s first name?", type:"open" },
+{ text:"What’s their karaoke song?", type:"open" },
+{ text:"What’s their favourite cuisine?", type:"open" },
+{ text:"What’s their favourite holiday country?", type:"open" },
+];
+const CUSTOM_KEY = "__custom__";
+
+function populatePunisherUI(names){
+const target=$("#targetPlayer"); target.innerHTML=''; names.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;target.appendChild(o);});
+const qs=$("#questionSelect"); qs.innerHTML='';
+QUESTION_BANK.forEach((q,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=q.text;qs.appendChild(o);});
+const o=document.createElement('option'); o.value=CUSTOM_KEY; o.textContent="Make my own (max 50 chars)"; qs.appendChild(o);
+handleQuestionType(); // set initial visibility
+}
+function handleQuestionType(){
+const val=$("#questionSelect").value;
+const ynBlock=$("#ynBlock"), answers=$("#answersBlock"), custom=$("#customBlock"), answersLabel=$("#answersLabel");
+if(val===CUSTOM_KEY){
+ynBlock.hidden=true; custom.hidden=false; answers.hidden=false; answersLabel.hidden=false;
+}else{
+const q = QUESTION_BANK[Number(val)];
+if(q && q.type==="yn"){
+ynBlock.hidden=false; answers.hidden=true; custom.hidden=true; answersLabel.hidden=true;
+}else{
+ynBlock.hidden=true; answers.hidden=false; custom.hidden=true; answersLabel.hidden=false;
+}
+}
+}
+$("#questionSelect").addEventListener('change', handleQuestionType);
+
+// actions
+$("#confirmBtn").addEventListener('click', async ()=>{
+try{
+const names=[...nameInputsEl.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean).slice(0,10);
+if(names.length<3){toast('Add at least 3 names');return;}
+const { gameId, state } = await apiCreate(names);
+$("#host-setup").style.display='none';
+render({ ...state, gameId });
+history.replaceState(null,'',`/?g=${encodeURIComponent(gameId)}`);
+toast('Game created. Tap your name, share to lock it.');
+}catch(e){ toast(e.message); }
+});
+
+$("#resetBtn").addEventListener('click', ()=>{
+[...nameInputsEl.querySelectorAll('input')].forEach(i=>i.value='');
+localStorage.clear(); location.href='/';
+});
+
+async function onTap(name, btn){
+if(!current) return;
+const gameId=current.gameId;
+
+// already locked on this device?
+if(localStorage.getItem(`td-picked-${gameId}`)){
+btn.classList.add('wobble'); setTimeout(()=>btn.classList.remove('wobble'),280); return;
+}
+
+// First click -> flash red, rotate to down, then mark pending (amber)
+btn.classList.remove('up'); btn.classList.add('down'); flashRed(btn);
+setTimeout(()=>{ btn.classList.add('pending'); }, 240);
+
+try{
+const { state, shareText } = await apiTap(gameId, name);
+render({ ...state, gameId });
+
+// Device is “picked” (can’t pick others)
+localStorage.setItem(`td-picked-${gameId}`, name);
+
+// Show note
+const note=$("#shareNote"); note.hidden=false;
+note.textContent="Your tap is pending (amber). Share to the WhatsApp group to lock it (green).";
+
+// Share; after share, call confirm to lock green
+const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+let shared=false;
+if(navigator.share){
+try{ await navigator.share({ title:'Thumbs Down', text:shareText }); shared=true; }catch(_){ shared=false; }
+}
+if(!shared){ location.href = waUrl; }
+
+// Immediately confirm server-side (we can’t prove share, but this matches your rule)
+const d = await apiConfirmTap(gameId, name);
+render({ ...d.state, gameId }); // will show green ring (confirmed)
+
+}catch(e){
+// rollback to up
+btn.classList.remove('down','pending','confirmed'); btn.classList.add('up'); btn.querySelector('.g').textContent='👍';
+toast(e.message);
+}
+}
+
+// Punisher modal
+function maybeOpenPunisher(state){
+const remaining = state.names.filter(n=>!state.tapped.includes(n) && !state.pending?.[n]);
+if(remaining.length===1 && !current?.__modalOpen){
+current.__modalOpen = true;
+$("#punishTitle").textContent = "Congratulations — you’re the Punisher";
+$("#punisherModal").classList.add('show'); $("#punisherModal").setAttribute('aria-hidden','false');
+populatePunisherUI(state.names.filter(n=>n!==remaining[0])); // target cannot be the loser
+}
+}
+$("#closePunisher").addEventListener('click', ()=>{
+$("#punisherModal").classList.remove('show'); $("#punisherModal").setAttribute('aria-hidden','true');
+current.__modalOpen=false;
+});
+
+$("#sharePunisher").addEventListener('click', async ()=>{
+if(!current) return;
+const gameId=current.gameId;
+const target=$("#targetPlayer").value;
+const qSel=$("#questionSelect").value;
+
+let qType="open", questionText="";
+let answers=null, correct=null;
+
+if(qSel===CUSTOM_KEY){
+questionText=($("#customBlock #customQ").value||"").trim();
+if(!questionText){ toast('Enter your custom question'); return; }
+const A=($("#ansA").value||'').trim();
+const B=($("#ansB").value||'').trim();
+const C=($("#ansC").value||'').trim();
+const provided=[['A',A],['B',B],['C',C]].filter(([,v])=>v);
+if(provided.length<2){ toast('Provide at least two answers'); return; }
+const chosen=(($('input[name="correct"]:checked')||{}).value)||'A';
+if(!provided.find(([k])=>k===chosen)){ toast('Choose a correct answer that exists'); return; }
+qType="open"; questionText=questionText;
+answers={A,B,C,correct:chosen};
+}else{
+const q=QUESTION_BANK[Number(qSel)];
+if(!q){ toast('Pick a question'); return; }
+questionText=q.text;
+if(q.type==="yn"){
+qType="yn";
+correct=(($('input[name="yn"]:checked')||{}).value)||'Yes';
+}else{
+const A=($("#ansA").value||'').trim();
+const B=($("#ansB").value||'').trim();
+const C=($("#ansC").value||'').trim();
+const provided=[A,B,C].filter(Boolean);
+if(provided.length<2){ toast('Provide at least two answers'); return; }
+const chosen=(($('input[name="correct"]:checked')||{}).value)||'A';
+if(chosen==='C' && !C){ toast('Correct cannot be empty'); return; }
+answers={A,B,C,correct:chosen};
+}
+}
+
+const dare=($("#dareText").value||'').trim();
+
+try{
+const payload={ target, qType, questionText, answers, dare };
+const { state, shareText } = await apiPrepareReveal(gameId, payload);
+
+// Share; after share, confirm reveal (turns green/locked)
+const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+let shared=false;
+if(navigator.share){
+try{ await navigator.share({ title:'Thumbs Down — Reveal', text:shareText }); shared=true; }catch(_){ shared=false; }
+}
+if(!shared){ location.href = waUrl; }
+
+const d = await apiConfirmReveal(gameId);
+$("#punisherModal").classList.remove('show'); $("#punisherModal").setAttribute('aria-hidden','true');
+current.__modalOpen=false;
+render({ ...d.state, gameId });
+toast('Reveal shared and locked');
+}catch(e){ toast(e.message); }
+});
+
+// Poll to reflect other people’s confirmations
+let poll=null;
+function startPoll(){ if(poll) return; poll=setInterval(async()=>{ if(!current) return; try{ const s=await apiState(current.gameId); render({ ...s, gameId:current.gameId }); }catch(_){} }, 3000); }
+
+// init
+(async function init(){
+const params=new URLSearchParams(location.search);
+const g=params.get('g');
+if(g){
+$("#host-setup").style.display='none';
+try{ const s=await apiState(g); render({ ...s, gameId:g }); startPoll(); }catch(e){ toast(e.message); }
+}
+})();
+</script>
+</body>
+</html>
