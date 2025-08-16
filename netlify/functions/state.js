@@ -1,12 +1,29 @@
-const store = require('./_store');
-
-exports.handler = async (event) => {
+// GET /api/state?gameId=...
+module.exports.handler = async (event) => {
+if (event.httpMethod !== 'GET') {
+return { statusCode: 405, body: 'Method Not Allowed' };
+}
 try {
-const gameId = (event.queryStringParameters && event.queryStringParameters.gameId) || '';
-const game = store.getGame(gameId);
-if (!game) return { statusCode: 404, body: JSON.stringify({ error: 'game not found' }) };
-return { statusCode: 200, body: JSON.stringify(store.toState(game)) };
+const id = event.queryStringParameters?.gameId || '';
+const { readGame } = require('./_store');
+const game = await readGame(id);
+if (!game) {
+return {
+statusCode: 404,
+headers: { 'content-type': 'application/json' },
+body: JSON.stringify({ error: 'game not found' })
+};
+}
+return {
+statusCode: 200,
+headers: { 'content-type': 'application/json' },
+body: JSON.stringify(game)
+};
 } catch (e) {
-return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+return {
+statusCode: 500,
+headers: { 'content-type': 'application/json' },
+body: JSON.stringify({ error: 'state failed' })
+};
 }
 };
