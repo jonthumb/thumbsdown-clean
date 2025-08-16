@@ -1,34 +1,35 @@
-// POST /api/confirm-tap { gameId, clientId, share:true }
-// Turns the current device's AMBER thumb to GREEN
-import { getGame, putGame, ok, bad } from './_store.js';
+const store = require('./_store');
 
-export async function handler(event) {
-if (event.httpMethod !== 'POST') return bad('POST required', 405);
-const { gameId, clientId } = JSON.parse(event.body || '{}');
-if (!gameId || !clientId) return bad('missing fields');
+exports.handler = async (event) => {
+try {
+if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+const { gameId, name, clientId } = JSON.parse(event.body || '{}');
+const game = store.getGame(gameId);
+if (!game) return { statusCode: 404, body: JSON.stringify({ error: 'game not found' }) };
 
-const game = await getGame(gameId);
-if (!game) return bad('game not found', 404);
+const player = game.players.find(p => p.name.toLowerCase() === String(name||'').toLowerCase());
+if (!player) return { statusCode: 400, body: JSON.stringify({ error: 'name not in game' }) };
 
-// find the amber row that belongs to this device
-const mine = game.names.find(n => game.taps[n].clientId === clientId && game.taps[n].state === 'amber');
-if (!mine) return bad('nothing to confirm');
-
-game.taps[mine].state = 'green';
-
-await putGame(game);
-return ok(toClient(game));
+// one device → one confirmed name per game
+const already = game.players.find(p => p.deviceId === clientId && p.name.toLowerCase() !== player.name.toLowerCase());
+if (already) {
+return { statusCode: 400, body: JSON.stringify({ error: 'device already confirmed another player' }) };
 }
 
-function toClient(game){
-return {
-gameId: game.id,
-names: game.names,
-tapped: game.names.filter(n => game.taps[n].state !== 'up'),
-states: Object.fromEntries(game.names.map(n => [n, game.taps[n].state])),
-revealed: game.revealed,
-loser: game.loser,
-dare: game.dare,
-question: game.question
+player.status = 'confirmed'; // turn green
+player.deviceId = clientId;
+
+// recompute loser
+const up = game.players.filter(p => p.status === 'up').map(p => p.name);
+if (up.length === 1) {
+game.loser = up[0];
+} else if (up.length === 0 && !game.loser) {
+// edge: everyone confirmed — no loser
+game.loser = null;
+}
+
+return { statusCode: 200, body: JSON.stringify(store.toState(game)) };
+} catch (e) {
+return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+}
 };
-}
