@@ -1,20 +1,26 @@
-// POST /api/prepare-reveal { gameId }
-// Computes if we are down to one remaining (loser candidate)
-import { getGame, putGame, ok, bad } from './_store.js';
+const store = require('./_store');
 
-export async function handler(event) {
-if (event.httpMethod !== 'POST') return bad('POST required', 405);
+// Returns data needed for the punisher modal once only one 'up' remains
+exports.handler = async (event) => {
+try {
+if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 const { gameId } = JSON.parse(event.body || '{}');
-if (!gameId) return bad('missing gameId');
-const game = await getGame(gameId);
-if (!game) return bad('game not found', 404);
+const game = store.getGame(gameId);
+if (!game) return { statusCode: 404, body: JSON.stringify({ error: 'game not found' }) };
 
-const remaining = game.names.filter(n => game.taps[n].state === 'up' || game.taps[n].state === 'amber');
-const down = game.names.filter(n => game.taps[n].state === 'green');
+const up = game.players.filter(p => p.status === 'up').map(p => p.name);
+const pending = game.players.filter(p => p.status === 'pending').map(p => p.name);
+const confirmed = game.players.filter(p => p.status === 'confirmed').map(p => p.name);
 
-return ok({
-remaining,
-down,
-pendingLoser: remaining.length === 1 ? remaining[0] : null
-});
+return {
+statusCode: 200,
+body: JSON.stringify({
+gameId: game.id,
+loser: game.loser,
+up, pending, confirmed
+})
+};
+} catch (e) {
+return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
 }
+};
