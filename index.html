@@ -1,13 +1,12 @@
-<!-- BUILD: v46 -->
+<!-- BUILD: v47 (no <form>, native validation hard-disabled) -->
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>THUMBS DOWN · v46</title>
+<title>THUMBS DOWN · v47</title>
 <meta name="theme-color" content="#111111"/>
 
-<!-- Social preview -->
 <meta property="og:title" content="Thumbs Down" />
 <meta property="og:description" content="Tap fast. Last one down gets a task." />
 <meta property="og:type" content="website" />
@@ -16,132 +15,64 @@
 
 <style>
 :root{
---cream:#F7F1E6;
---ink:#0F0F10;
---box:#111214;
---green:#2e7d32;
---amber:#f9a825;
---red:#d32f2f;
---muted:#a9adb6;
---accent:#2c2f34;
---accent-2:#1b1d20;
---radius:16px;
+--cream:#F7F1E6; --ink:#0F0F10; --box:#111214; --green:#2e7d32;
+--amber:#f9a825; --red:#d32f2f; --muted:#a9adb6;
+--accent:#2c2f34; --accent-2:#1b1d20; --radius:16px;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{
-margin:0;
-font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-background:var(--cream);
-color:var(--ink);
--webkit-font-smoothing:antialiased;
--moz-osx-font-smoothing:grayscale;
-}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-/* Header / logo row */
-header{
-max-width:680px;
-margin:16px auto 10px;
-padding:0 16px;
-display:flex;
-align-items:flex-end;
-gap:14px;
-flex-wrap:nowrap;
-}
-.logo-mark{
-font-size:36px; line-height:1;
-transform: rotate(180deg);
-filter: hue-rotate(90deg) saturate(1.2);
-}
-.title-wrap{ display:flex; flex-direction:column; gap:6px; min-width:0; flex:1; }
-.brand{ display:flex; align-items:baseline; gap:10px; white-space:nowrap; overflow:hidden; }
-.brand h1{ margin:0; font-weight:800; letter-spacing:.2px; font-size: clamp(22px, 6.3vw, 34px); }
-.tag{
-margin:0; color:#2b2e31;
-font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-font-style: italic; font-size: clamp(13px, 3.2vw, 16px);
-text-align:right; opacity:.9;
-}
+header{max-width:680px;margin:16px auto 10px;padding:0 16px;display:flex;align-items:flex-end;gap:14px}
+.logo-mark{font-size:36px;line-height:1;transform:rotate(180deg);filter:hue-rotate(90deg) saturate(1.2)}
+.title-wrap{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap;overflow:hidden}
+.brand h1{margin:0;font-weight:800;letter-spacing:.2px;font-size:clamp(22px,6.3vw,34px)}
+.tag{margin:0;color:#2b2e31;font-family:ui-rounded,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-style:italic;font-size:clamp(13px,3.2vw,16px);text-align:right;opacity:.9}
 
-/* Main card */
-.card{
-max-width:680px; margin:0 auto 18px;
-background:linear-gradient(180deg, var(--box), var(--accent-2));
-color:#fff; border-radius:var(--radius);
-box-shadow:0 10px 30px rgba(0,0,0,.25); padding:16px;
-}
+.card{max-width:680px;margin:0 auto 18px;background:linear-gradient(180deg,var(--box),var(--accent-2));color:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:16px}
 
-/* Host setup */
 .hint{color:#d0d3d8;font-size:13px;margin:4px 0 10px}
-.names-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-.names-grid input{
-width:100%; border-radius:10px; background:#1a1c20; color:#fff;
-border:1px solid #2b2d31; padding:10px 12px; font-size:15px;
-}
-.row{ display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:10px; }
-.btn{
-appearance:none; border:0; border-radius:10px; padding:10px 14px;
-font-weight:700; font-size:14px; cursor:pointer;
-}
-.btn.primary{ background:#21c063; color:#05230f; }
-.btn.ghost{ background:#24262b; color:#e6e8ec; }
-.btn.small{ padding:8px 12px; font-size:13px }
+.names-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.names-grid input{width:100%;border-radius:10px;background:#1a1c20;color:#fff;border:1px solid #2b2d31;padding:10px 12px;font-size:15px}
+.row{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
+.btn{appearance:none;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;cursor:pointer}
+.btn.primary{background:#21c063;color:#05230f}
+.btn.ghost{background:#24262b;color:#e6e8ec}
+.btn.small{padding:8px 12px;font-size:13px}
 
-/* Table / thumbs grid */
-.table-area{ margin-top:12px; }
-.thumbs{
-display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
-justify-items:center; align-items:center;
-}
-.person{ display:flex; flex-direction:column; align-items:center; gap:4px; }
-.thumb-wrap{ position:relative; }
-.thumb{
-font-size:36px; line-height:1; background:transparent; border:0; cursor:pointer;
-transition: transform .25s ease, opacity .2s ease;
-filter: drop-shadow(0 1px 0 rgba(0,0,0,.35));
-}
-.thumb.flip{ transform: rotate(180deg); }
-.thumb.locked{ opacity:.7; cursor:default }
-.name{
-font-size:12px; color:#cfd3d9; text-align:center; width:100%;
-max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-.dot{
-position:absolute; right:-3px; top:-3px; width:10px; height:10px; border-radius:50%;
-box-shadow:0 0 0 2px #111;
-}
-.dot.red{ background:var(--red); }
-.dot.amber{ background:var(--amber); }
-.dot.green{ background:var(--green); }
+.table-area{margin-top:12px}
+.thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;justify-items:center;align-items:center}
+.person{display:flex;flex-direction:column;align-items:center;gap:4px}
+.thumb-wrap{position:relative}
+.thumb{font-size:36px;line-height:1;background:transparent;border:0;cursor:pointer;transition:transform .25s ease,opacity .2s ease;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35))}
+.thumb.flip{transform:rotate(180deg)}
+.thumb.locked{opacity:.7;cursor:default}
+.name{font-size:12px;color:#cfd3d9;text-align:center;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{position:absolute;right:-3px;top:-3px;width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 2px #111}
+.dot.red{background:var(--red)}
+.dot.amber{background:var(--amber)}
+.dot.green{background:var(--green)}
 
-/* Punisher modal */
-.modal{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:flex-end; justify-content:center; padding:16px; }
-.modal.show{ display:flex }
-.sheet{ width:100%; max-width:680px; background:#0f1013; color:#fff; border-radius:16px 16px 12px 12px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.45); }
-.sheet h3{ margin:0 0 8px; font-size:18px }
-.sheet p{ margin:0 0 10px; color:#cdd2d8; font-size:14px }
-.sheet textarea{ width:100%; min-height:80px; background:#181a1e; border:1px solid #2a2c31; color:#fff; border-radius:12px; padding:10px; font-size:14px }
-.actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:10px }
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.sheet{width:100%;max-width:680px;background:#0f1013;color:#fff;border-radius:16px 16px 12px 12px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.sheet h3{margin:0 0 8px;font-size:18px}
+.sheet p{margin:0 0 10px;color:#cdd2d8;font-size:14px}
+.sheet textarea{width:100%;min-height:80px;background:#181a1e;border:1px solid #2a2c31;color:#fff;border-radius:12px;padding:10px;font-size:14px}
+.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
 
-/* Share confirm bar (when user returns from WhatsApp) */
-.sharebar{
-position:fixed; left:0; right:0; bottom:0; background:#101214; color:#fff;
-padding:12px; display:none; gap:10px; align-items:center; justify-content:space-between; box-shadow:0 -6px 20px rgba(0,0,0,.35);
-}
-.sharebar.show{ display:flex }
-.sharebar .msg{ font-size:14px; color:#cfd3d9 }
-.sharebar .btn{ border-radius:8px }
+.sharebar{position:fixed;left:0;right:0;bottom:0;background:#101214;color:#fff;padding:12px;display:none;gap:10px;align-items:center;justify-content:space-between;box-shadow:0 -6px 20px rgba(0,0,0,.35)}
+.sharebar.show{display:flex}
+.sharebar .msg{font-size:14px;color:#cfd3d9}
+.sharebar .btn{border-radius:8px}
 
-/* Toast */
-#toast{
-position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
-background:#111; color:#fff; padding:8px 12px; border-radius:8px; opacity:0; pointer-events:none; transition:opacity .2s;
-}
-#toast.show{ opacity:.95 }
+#toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#111;color:#fff;padding:8px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:.95}
 
 @media (max-width:420px){
-.names-grid{ grid-template-columns:1fr }
-.thumbs{ grid-template-columns:repeat(4,1fr) }
+.names-grid{grid-template-columns:1fr}
+.thumbs{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
@@ -158,17 +89,15 @@ background:#111; color:#fff; padding:8px 12px; border-radius:8px; opacity:0; poi
 
 <!-- CARD -->
 <main class="card">
-<!-- HOST SETUP (wrapped in novalidate form to kill Safari validation) -->
-<form id="hostForm" novalidate autocomplete="off" onsubmit="return false;">
-<div id="host-setup">
-<div class="hint">Add up to 10 friends</div>
+<!-- HOST SETUP (no <form>) -->
+<div id="host-setup" role="group" aria-labelledby="setupTitle">
+<div class="hint" id="setupTitle">Add up to 10 friends · v47</div>
 <div class="names-grid" id="nameInputs"></div>
 <div class="row">
-<button class="btn ghost small" id="resetBtn" type="button" aria-label="Reset">Reset</button>
-<button class="btn primary small" id="confirmBtn" type="button" aria-label="Confirm">Confirm</button>
+<button class="btn ghost small" id="resetBtn" type="button" aria-label="Reset" formnovalidate>Reset</button>
+<button class="btn primary small" id="confirmBtn" type="button" aria-label="Confirm" formnovalidate>Confirm</button>
 </div>
 </div>
-</form>
 
 <!-- TABLE -->
 <div class="table-area" id="tableArea" hidden>
@@ -199,15 +128,34 @@ background:#111; color:#fff; padding:8px 12px; border-radius:8px; opacity:0; poi
 <div id="toast"></div>
 
 <script>
-// ---------- Kill native validation popups ----------
-document.addEventListener('invalid', (e)=>{ e.preventDefault(); }, true);
-document.addEventListener('submit', (e)=>{ e.preventDefault(); e.stopPropagation(); }, true);
+/* ==== HARD-DISABLE native constraint validation everywhere ==== */
+(function(){
+const noopTrue = () => true;
+const noop = () => {};
+if (window.HTMLFormElement) {
+if (HTMLFormElement.prototype.checkValidity) HTMLFormElement.prototype.checkValidity = noopTrue;
+if (HTMLFormElement.prototype.reportValidity) HTMLFormElement.prototype.reportValidity = noopTrue;
+if (HTMLFormElement.prototype.submit) HTMLFormElement.prototype.submit = function(){};
+}
+['HTMLInputElement','HTMLTextAreaElement','HTMLSelectElement'].forEach(ctor=>{
+const C = window[ctor];
+if (!C) return;
+if (C.prototype.checkValidity) C.prototype.checkValidity = noopTrue;
+if (C.prototype.reportValidity) C.prototype.reportValidity = noopTrue;
+// strip constraints just in case
+['required','pattern','min','max','step','type'].forEach(attr=>{
+Object.defineProperty(C.prototype, attr, { set: noop, get(){ return undefined; } });
+});
+});
+// Block any bubbling submit/invalid events
+window.addEventListener('submit', e=>{ e.preventDefault(); e.stopPropagation(); }, true);
+window.addEventListener('invalid', e=>{ e.preventDefault(); e.stopPropagation(); }, true);
+})();
 
-// ---------- tiny helpers ----------
+// ---------- helpers ----------
 const $ = (sel)=>document.querySelector(sel);
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
 
-// persistent device id (one tap per device per game)
 function getClientId(){
 const k='td-client-id';
 let v=localStorage.getItem(k);
@@ -216,23 +164,21 @@ return v;
 }
 const clientId = getClientId();
 
-// inputs for host
+// build host inputs (no constraints)
 const nameInputsEl = $("#nameInputs");
-const MAX = 10;
-for (let i=0;i<MAX;i++){
+for (let i=0;i<10;i++){
 const inp = document.createElement('input');
-inp.type = 'text';
 inp.placeholder = `Name ${i+1}`;
 inp.autocapitalize = 'words';
 inp.autocomplete = 'off';
 nameInputsEl.appendChild(inp);
 }
 
-// global state
+// state
 let current = null; // { gameId, names, tapped, revealed, dare, loser }
-let pending = null; // { gameId, name } for red->amber before confirm/share
+let pending = null; // { gameId, name }
 
-// ---------- API wrappers ----------
+// API
 async function apiCreate(names){
 const r = await fetch('/api/game',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({names})});
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'create failed'); return d;
@@ -250,43 +196,30 @@ const r = await fetch('/api/reveal',{method:'POST', headers:{'content-type':'app
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'reveal failed'); return d;
 }
 
-// ---------- rendering ----------
+// render
 function render(state){
 current = state;
 $("#tableArea").hidden = false;
 
 const wrap = $("#thumbs"); wrap.innerHTML='';
 state.names.forEach(n=>{
-const isDown = state.tapped.includes(n); // confirmed (green)
-const isPendingThisDevice =
-pending && pending.gameId===state.gameId && pending.name===n;
+const isDown = state.tapped.includes(n);
+const isPendingThisDevice = pending && pending.gameId===state.gameId && pending.name===n;
 
 const person = document.createElement('div'); person.className='person';
-
 const btnWrap = document.createElement('div'); btnWrap.className='thumb-wrap';
 const dot = document.createElement('div'); dot.className='dot';
 const btn = document.createElement('button'); btn.className='thumb'; btn.type='button';
 
-// emoji & rotation
-if(isDown){ btn.textContent='👎'; }
-else if(isPendingThisDevice){ btn.textContent='👎'; btn.classList.add('flip'); }
-else { btn.textContent='👍'; }
+if(isDown){ btn.textContent='👎'; btn.classList.add('flip'); dot.classList.add('green'); }
+else if(isPendingThisDevice){ btn.textContent='👎'; btn.classList.add('flip'); dot.classList.add('amber'); }
+else { btn.textContent='👍'; dot.classList.add('red'); }
 
-// dot colour
-if(isDown){ dot.classList.add('green'); }
-else if(isPendingThisDevice){ dot.classList.add('amber'); }
-else { dot.classList.add('red'); }
-
-// click handler
 btn.addEventListener('click', ()=> onTap(n, btn, dot));
-
-// lock others if device already confirmed
 applyDeviceLock(state.gameId, btn);
 
-btnWrap.appendChild(btn);
-btnWrap.appendChild(dot);
+btnWrap.appendChild(btn); btnWrap.appendChild(dot);
 person.appendChild(btnWrap);
-
 const label = document.createElement('div'); label.className='name'; label.textContent=n;
 person.appendChild(label);
 wrap.appendChild(person);
@@ -301,7 +234,7 @@ if(!btn.classList.contains('flip')) btn.classList.add('locked');
 }
 }
 
-// ---------- actions ----------
+// actions
 $("#confirmBtn").addEventListener('click', async ()=>{
 try{
 const names = [...nameInputsEl.querySelectorAll('input')]
@@ -312,12 +245,10 @@ const names = [...nameInputsEl.querySelectorAll('input')]
 if(names.length<3){ toast('Add at least 3 names'); return; }
 
 const { gameId, state } = await apiCreate(names);
-
-// hide host setup for everyone once created
 $("#host-setup").style.display='none';
 render(state);
 toast('Game created. Tap your name to start!');
-history.replaceState(null,'',`/?g=${encodeURIComponent(gameId)}&v=46`);
+history.replaceState(null,'',`/?g=${encodeURIComponent(gameId)}&v=47`);
 }catch(e){ toast(e.message); }
 });
 
@@ -331,46 +262,34 @@ async function onTap(name, btn, dot){
 if(!current) return;
 const gameId = current.gameId;
 
-// if this device already confirmed someone, wobble and bail
 if(localStorage.getItem(`td-lock-${gameId}`)){
 btn.classList.add('wobble'); setTimeout(()=>btn.classList.remove('wobble'),450);
 return;
 }
 
-// If we already have a pending for another name, don't let them switch
 if(pending && pending.name !== name){
 btn.classList.add('wobble'); setTimeout(()=>btn.classList.remove('wobble'),450);
 return;
 }
 
-// First tap → rotate + amber + share prompt (but DO NOT persist yet)
 if(!pending){
 pending = { gameId, name };
-// visual: flip & amber
-btn.classList.add('flip');
-btn.textContent = '👎';
+btn.classList.add('flip'); btn.textContent='👎';
 dot.classList.remove('red'); dot.classList.add('amber');
 
-// show share intent
-const shareText = `I’ve tapped my name in Thumbs Down.\nJoin the table:\n${location.origin}/?g=${encodeURIComponent(gameId)}&v=46`;
+const shareText = `I’ve tapped my name in Thumbs Down.\nJoin the table:\n${location.origin}/?g=${encodeURIComponent(gameId)}&v=47`;
 const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-
-// open share
 try{
 if(navigator.share){
 await navigator.share({ title:'Thumbs Down', text: shareText });
-// show confirm bar (in case the share sheet doesn't navigate)
 $("#shareBar").classList.add('show');
 }else{
-// navigate to WhatsApp share; when user comes back, they'll see the confirm bar
 location.href = waUrl;
 setTimeout(()=> $("#shareBar").classList.add('show'), 600);
 }
 }catch(_){
-// If share cancelled, let them try again (revert to red/up)
 pending = null;
-btn.classList.remove('flip');
-btn.textContent = '👍';
+btn.classList.remove('flip'); btn.textContent='👍';
 dot.classList.remove('amber'); dot.classList.add('red');
 toast('Share cancelled');
 }
@@ -378,7 +297,6 @@ return;
 }
 }
 
-// Confirm they shared → persist tap (green + lock, server knows)
 $("#confirmShared").addEventListener('click', async ()=>{
 if(!pending || !current) return;
 const { gameId, name } = pending;
@@ -386,27 +304,18 @@ try{
 const state = await apiTap(gameId, name);
 $("#shareBar").classList.remove('show');
 pending = null;
-
-// lock this device to prevent any more taps
 localStorage.setItem(`td-lock-${gameId}`, name);
-
-// re-render (now green on server)
 render(state);
 
-// If this made them the penultimate, open Punisher
 const remaining = state.names.filter(n => !state.tapped.includes(n));
 if(remaining.length===1){
-const loser = remaining[0];
-$("#loserName").textContent = loser;
+$("#loserName").textContent = remaining[0];
 $("#punisherModal").classList.add('show');
 $("#punisherModal").setAttribute('aria-hidden','false');
 }
-}catch(e){
-toast(e.message || 'Could not confirm tap');
-}
+}catch(e){ toast(e.message || 'Could not confirm tap'); }
 });
 
-// Punisher modal actions
 $("#closePunisher").addEventListener('click', ()=>{
 $("#punisherModal").classList.remove('show');
 $("#punisherModal").setAttribute('aria-hidden','true');
@@ -420,47 +329,36 @@ const state = await apiReveal(current.gameId, dare);
 $("#punisherModal").classList.remove('show');
 $("#punisherModal").setAttribute('aria-hidden','true');
 
-const url = location.origin + `/?g=${encodeURIComponent(state.gameId)}&reveal=1&v=46`;
+const url = location.origin + `/?g=${encodeURIComponent(state.gameId)}&reveal=1&v=47`;
 const text = `Thumbs Down — result:\n\nLoser: ${state.loser || 'unknown'}\nTask: ${state.dare || '(none)'}\n\nOpen: ${url}`;
 const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
 
-if(navigator.share){
-await navigator.share({ title:'Thumbs Down', text });
-}else{
-location.href = wa;
-}
+if(navigator.share){ await navigator.share({ title:'Thumbs Down', text }); }
+else{ location.href = wa; }
 }catch(e){ toast(e.message || 'Share failed'); }
 });
 
-// ---------- live updates (poll) ----------
-let pollTimer = null;
+// polling
+let pollTimer=null;
 function startPolling(){
 if(pollTimer) return;
 pollTimer = setInterval(async ()=>{
 if(!current?.gameId) return;
-try{
-const s = await apiState(current.gameId);
-render(s);
-}catch(_){}
+try{ render(await apiState(current.gameId)); }catch(_){}
 }, 2500);
 }
 document.addEventListener('visibilitychange', ()=>{
-if(document.hidden){ if(pollTimer) { clearInterval(pollTimer); pollTimer=null; } }
+if(document.hidden){ if(pollTimer){ clearInterval(pollTimer); pollTimer=null; } }
 else startPolling();
 });
 
-// ---------- boot ----------
+// boot
 (async function init(){
-// hide host for players (visiting with ?g=)
 const params = new URLSearchParams(location.search);
 const g = params.get('g');
 if(g){
 $("#host-setup").style.display='none';
-try{
-const state = await apiState(g);
-render(state);
-startPolling();
-}catch(e){ toast(e.message || 'Could not load game'); }
+try{ render(await apiState(g)); startPolling(); }catch(e){ toast(e.message || 'Could not load game'); }
 }
 })();
 </script>
