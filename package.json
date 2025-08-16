@@ -1,11 +1,12 @@
 {
 "name": "thumbsdown-clean",
 "version": "1.0.0",
+"private": true,
 "description": "Thumbs Down game",
 "main": "index.html",
 "scripts": {
-"start": "echo 'No local server, deploy on Netlify'",
-"build": "echo 'No build step'"
+"start": "echo No local build",
+"build": "echo No build step"
 },
 "dependencies": {
 "uuid": "^9.0.0"
