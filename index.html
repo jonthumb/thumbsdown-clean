@@ -1,12 +1,12 @@
-<!-- BUILD-MARKER: v43 -->
+<!-- BUILD-MARKER: v44 -->
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Thumbs Down · v43</title>
+<title>Thumbs Down · v44</title>
 <meta name="theme-color" content="#111111"/>
-<meta name="x-build" content="build-2025-08-16-v43"/>
+<meta name="x-build" content="build-2025-08-16-v44"/>
 
 <!-- Social preview -->
 <meta property="og:title" content="Thumbs Down" />
@@ -17,75 +17,38 @@
 
 <style>
 :root{
---cream:#F7F1E6;
---ink:#0F0F10;
---box:#111214;
---green:#2e7d32;
+--cream:#F7F1E6; --ink:#0F0F10; --box:#111214; --green:#2e7d32;
 --green-emoji-filter: hue-rotate(90deg) saturate(1.2);
---muted:#a9adb6;
---accent:#2c2f34;
---accent-2:#1b1d20;
---radius:16px;
+--muted:#a9adb6; --accent:#2c2f34; --accent-2:#1b1d20; --radius:16px;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-margin:0;
-font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-background:var(--cream);
-color:var(--ink);
--webkit-font-smoothing:antialiased;
--moz-osx-font-smoothing:grayscale;
+margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
-
-/* Header */
-header{
-max-width:680px;
-margin:16px auto 10px;
-padding:0 16px;
-display:flex;
-align-items:flex-end;
-gap:14px;
-flex-wrap:nowrap;
-}
+header{max-width:680px;margin:16px auto 10px;padding:0 16px;display:flex;align-items:flex-end;gap:14px;flex-wrap:nowrap}
 .logo-mark{font-size:36px;line-height:1;transform:rotate(180deg);filter:var(--green-emoji-filter)}
 .title-wrap{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
 .brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap;overflow:hidden}
 .brand h1{margin:0;font-weight:800;letter-spacing:.2px;font-size:clamp(22px,6.3vw,34px)}
 .tag{margin:0;color:#2b2e31;font-family:ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;font-style:italic;font-size:clamp(13px,3.2vw,16px);text-align:right;opacity:.9}
-
-/* Card */
-.card{
-max-width:680px;margin:0 auto 18px;background:linear-gradient(180deg,var(--box),var(--accent-2));
-color:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:16px;
-}
-
-/* Host setup */
+.card{max-width:680px;margin:0 auto 18px;background:linear-gradient(180deg,var(--box),var(--accent-2));color:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:16px}
 .hint{color:#d0d3d8;font-size:13px;margin:4px 0 10px}
 .names-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.names-grid input{
-width:100%;border-radius:10px;background:#1a1c20;color:#fff;border:1px solid #2b2d31;
-padding:10px 12px;font-size:15px;
-}
+.names-grid input{width:100%;border-radius:10px;background:#1a1c20;color:#fff;border:1px solid #2b2d31;padding:10px 12px;font-size:15px}
 .row{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
 .btn{appearance:none;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;cursor:pointer}
 .btn.primary{background:#21c063;color:#05230f}
 .btn.ghost{background:#24262b;color:#e6e8ec}
 .btn.small{padding:8px 12px;font-size:13px}
-
-/* Table */
 .table-area{margin-top:12px}
 .thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;justify-items:center;align-items:center}
-.thumb{
-font-size:34px;line-height:1;background:transparent;border:0;cursor:pointer;
-transition:transform .22s ease, opacity .2s ease;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35));
-}
+.thumb{font-size:34px;line-height:1;background:transparent;border:0;cursor:pointer;transition:transform .22s ease,opacity .2s ease;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35))}
 .thumb.down{transform:rotate(180deg);filter:var(--green-emoji-filter) drop-shadow(0 1px 0 rgba(0,0,0,.35))}
 .thumb.locked{opacity:.6;cursor:default}
 .name{margin-top:4px;font-size:12px;color:#cfd3d9;text-align:center;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .person{display:flex;flex-direction:column;align-items:center;gap:2px}
-
-/* Modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;padding:16px}
 .modal.show{display:flex}
 .sheet{width:100%;max-width:680px;background:#0f1013;color:#fff;border-radius:16px 16px 12px 12px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
@@ -93,16 +56,9 @@ transition:transform .22s ease, opacity .2s ease;filter:drop-shadow(0 1px 0 rgba
 .sheet p{margin:0 0 10px;color:#cdd2d8;font-size:14px}
 .sheet textarea{width:100%;min-height:80px;background:#181a1e;border:1px solid #2a2c31;color:#fff;border-radius:12px;padding:10px;font-size:14px}
 .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
-
-/* Toast */
 #toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#111;color:#fff;padding:8px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.show{opacity:.95}
-
-/* Small screens */
-@media (max-width:400px){
-.names-grid{grid-template-columns:1fr}
-.thumbs{grid-template-columns:repeat(4,1fr)}
-}
+@media (max-width:400px){.names-grid{grid-template-columns:1fr}.thumbs{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
@@ -150,11 +106,13 @@ transition:transform .22s ease, opacity .2s ease;filter:drop-shadow(0 1px 0 rgba
 <div id="toast"></div>
 
 <script>
-// ---------- helpers ----------
-const $ = (sel) => document.querySelector(sel);
+// ---- disable any native validation bubbles, just in case ----
+document.addEventListener('invalid', (e)=>{ e.preventDefault(); }, true);
+
+// helpers
+const $ = (sel)=>document.querySelector(sel);
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
 
-// persistent device id
 function getClientId(){
 const k='td-client-id';
 let v=localStorage.getItem(k);
@@ -163,8 +121,7 @@ return v;
 }
 const clientId = getClientId();
 
-// ---------- “SAFE” NAME INPUTS ----------
-// No pattern / regex at all. Just trim and limit length in JS.
+// SAFE name inputs (no pattern; we even force pattern=".*" for safety)
 const nameInputsEl = $("#nameInputs");
 const MAX = 10;
 for (let i=0;i<MAX;i++){
@@ -174,14 +131,14 @@ inp.placeholder = `Name ${i+1}`;
 inp.autocapitalize = 'words';
 inp.autocomplete = 'off';
 inp.inputMode = 'text';
-inp.maxLength = 24; // soft limit to keep labels tidy
+inp.maxLength = 24;
+inp.setAttribute('pattern','.*'); // neutral pattern
+inp.required = false; // ensure no required constraint
 nameInputsEl.appendChild(inp);
 }
 
-// state
 let current = null; // { gameId, names, tapped, revealed, dare, loser }
 
-// ---------- network ----------
 async function apiCreate(names){
 const r = await fetch('/api/game',{method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({names})});
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'create failed'); return d;
@@ -199,7 +156,6 @@ const r = await fetch('/api/reveal',{method:'POST', headers:{'content-type':'app
 const d = await r.json(); if(!r.ok) throw new Error(d.error||'reveal failed'); return d;
 }
 
-// ---------- UI render ----------
 function render(state){
 current = state;
 $("#tableArea").hidden = false;
@@ -228,10 +184,8 @@ if(!b.classList.contains('down')) b.classList.add('locked');
 }
 }
 
-// ---------- actions ----------
 $("#confirmBtn").addEventListener('click', async ()=>{
 try{
-// Collect names safely: trim, dedupe consecutive spaces, drop empties
 const names = [...nameInputsEl.querySelectorAll('input')]
 .map(i=>i.value.replace(/\s+/g,' ').trim())
 .filter(Boolean)
@@ -240,7 +194,6 @@ const names = [...nameInputsEl.querySelectorAll('input')]
 if(names.length<3){ toast('Add at least 3 names'); return; }
 
 const { gameId, state } = await apiCreate(names);
-
 $("#host-setup").style.display='none';
 render(state);
 toast('Game created. Tap your name to start!');
@@ -262,7 +215,6 @@ if(localStorage.getItem(`td-lock-${gameId}`)){
 el.classList.add('wobble'); setTimeout(()=>el.classList.remove('wobble'),250); return;
 }
 
-// optimistic
 el.classList.add('down'); el.textContent='👎';
 try{
 const state = await apiTap(gameId, canonicalName);
@@ -282,7 +234,6 @@ toast(e.message);
 }
 }
 
-// Punisher modal actions
 $("#closePunisher").addEventListener('click', ()=>{
 $("#punisherModal").classList.remove('show');
 $("#punisherModal").setAttribute('aria-hidden','true');
@@ -308,7 +259,6 @@ location.href = wa;
 }catch(e){ toast(e.message); }
 });
 
-// ---------- boot ----------
 (async function init(){
 const params = new URLSearchParams(location.search);
 const g = params.get('g');
