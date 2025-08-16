@@ -1,78 +1,57 @@
-// _store.js — tiny wrapper around Netlify Blobs (KV)
-import { getStore } from '@netlify/blobs';
+// CommonJS singleton store (in-memory).
+const { v4: uuidv4 } = require('uuid');
 
-const store = getStore({ name: 'thumbsdown', consistency: 'strong' });
+const store = {
+games: {},
 
-const key = (id) => `game:${id}`;
+createGame(names) {
+const id = uuidv4();
+// canonical list, trim blanks, unique by case-insensitive key
+const map = new Map();
+names.forEach(n => {
+const name = String(n || '').trim();
+if (!name) return;
+const key = name.toLowerCase();
+if (!map.has(key)) map.set(key, name);
+});
+const players = Array.from(map.values()).slice(0, 10).map(n => ({
+name: n,
+status: 'up', // 'up' (red) → 'pending' (amber) → 'confirmed' (green)
+deviceId: null, // set when confirmed
+tappedAt: null
+}));
 
-export async function getGame(id) {
-return await store.get(key(id), { type: 'json' });
-}
+const game = {
+id,
+players,
+createdAt: Date.now(),
+revealed: false,
+loser: null,
+dare: '',
+question: null // {subject, text, kind:'yesno'|'open', options:['A','B','C'] (2-3 entries)}
+};
 
-export async function putGame(game) {
-await store.set(key(game.id), JSON.stringify(game));
+store.games[id] = game;
 return game;
-}
+},
 
-export async function newId() {
-return (globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`);
-}
+getGame(id) {
+return store.games[id] || null;
+},
 
-// helpers to standardize API responses
-export function ok(data, status = 200) {
+toState(game) {
 return {
-statusCode: status,
-headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
-body: JSON.stringify(data)
+gameId: game.id,
+names: game.players.map(p => p.name),
+tapped: game.players.filter(p => p.status !== 'up').map(p => p.name),
+pending: game.players.filter(p => p.status === 'pending').map(p => p.name),
+confirmed: game.players.filter(p => p.status === 'confirmed').map(p => p.name),
+revealed: !!game.revealed,
+dare: game.dare || '',
+loser: game.loser || null,
+question: game.question || null
 };
 }
-export function bad(message, status = 400) {
-return ok({ error: message }, status);
-}
+};
 
-return g;
-}
-
-function prepareReveal(gameId, payload){
-const g=get(gameId); if(!g) throw new Error('game not found');
-const remaining = g.names.filter(n=>!g.tapped.includes(n) && !g.pending[n]);
-if(remaining.length!==1) throw new Error('not penultimate yet');
-const loser = remaining[0];
-// build share text now (answers shown based on type)
-const { target, qType, questionText, answers, dare } = payload || {};
-let qaSection = '';
-if(qType==='yn'){
-qaSection = `${questionText}\nAnswer: Yes or No`;
-}else{
-const opts=[];
-if(answers?.A) opts.push(`A) ${answers.A}`);
-if(answers?.B) opts.push(`B) ${answers.B}`);
-if(answers?.C) opts.push(`C) ${answers.C}`);
-qaSection = `${questionText}\n${opts.join('\n')}`;
-}
-const shareText =
-`Today's loser is: ${loser}
-
-They can escape by answering this about ${target}:
-
-${qaSection}
-
-Reply in this chat with your answer. If ${target} confirms it’s right, you escape; otherwise do the dare.
-
-Dare: ${dare || '(none)'}`;
-
-// stash escape meta (we finalize on confirmReveal)
-g._pendingReveal = { target, qType, questionText, answers, dare, loser, shareText };
-return { state:g, shareText };
-}
-
-function confirmReveal(gameId){
-const g=get(gameId); if(!g) throw new Error('game not found');
-const p=g._pendingReveal; if(!p) throw new Error('no pending reveal');
-g.revealed=true; g.loser=p.loser; g.dare=p.dare||null;
-g.escape = { target:p.target, qType:p.qType, questionText:p.questionText, answers:p.answers||null };
-delete g._pendingReveal;
-return g;
-}
-
-module.exports = { create, get, tapPending, confirmTap, prepareReveal, confirmReveal };
+module.exports = store;
