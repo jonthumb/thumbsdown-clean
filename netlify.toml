@@ -4,6 +4,7 @@ publish = "."
 [functions]
 directory = "netlify/functions"
 
+# API routes → functions (no leading "./")
 [[redirects]]
 from = "/api/game"
 to = "/.netlify/functions/game"
@@ -33,3 +34,9 @@ status = 200
 from = "/api/confirm-reveal"
 to = "/.netlify/functions/confirmReveal"
 status = 200
+
+# (Optional) keep HTML uncached by CDN so updates show instantly
+[[headers]]
+for = "/*.html"
+[headers.values]
+Cache-Control = "no-store, max-age=0"
