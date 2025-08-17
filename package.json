@@ -9,6 +9,9 @@
 "build": "echo No build step"
 },
 "dependencies": {
-"uuid": "^9.0.0"
+"uuid": "^9.0.0",
+"@netlify/blobs": "^6.5.0"
+}
+
 }
 }
