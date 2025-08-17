@@ -26,6 +26,9 @@ if (remainingUp.length === 1) {
 game.loser = remainingUp[0];
 }
 
+// persist the updated game
+await store.writegame(game);
+
 return { statusCode: 200, body: JSON.stringify(store.toState(game)) };
 } catch (e) {
 return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
