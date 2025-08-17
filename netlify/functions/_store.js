@@ -1,20 +1,20 @@
-// Persistent storage using Netlify Blobs.
-// No package.json change needed; we use dynamic import so CommonJS works.
+// netlify/functions/_store.js
+// CommonJS module + dynamic ESM import so it works on Netlify Functions
 
-async function getStore() {
-const mod = await import('@netlify/blobs');
-// One logical store for all games; strong consistency keeps reads fresh.
+async function kv() {
+const mod = await import('@netlify/blobs'); // ESM import at runtime
+// one logical store; strong consistency keeps reads fresh across regions
 return mod.getStore('td-games', { consistency: 'strong' });
 }
 
 async function readGame(id) {
 if (!id) return null;
-const store = await getStore();
+const store = await kv();
 return await store.getJSON(`game:${id}`);
 }
 
 async function writeGame(game) {
-const store = await getStore();
+const store = await kv();
 await store.setJSON(`game:${game.gameId}`, game, {
 metadata: { updated: Date.now() }
 });
@@ -22,41 +22,37 @@ return game;
 }
 
 async function createGame(names) {
-const id = (globalThis.crypto?.randomUUID?.() ||
-(Date.now() + Math.random().toString(36).slice(2)));
+const id =
+(globalThis.crypto?.randomUUID?.()) ||
+(Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+const players = names
+.map(n => n.trim())
+.filter(Boolean)
+.map(n => ({
+name: n,
+status: 'up', // 'up' | 'pending' (amber) | 'confirmed' (green)
+clientId: null,
+tappedAt: null
+}));
+
 const game = {
 gameId: id,
-names,
-tapped: [], // players who tapped (amber)
-confirmed: [], // players who shared/confirmed (green)
-revealed: false,
-dare: null,
-loser: null
-};
-return await writeGame(game);
-}
-
-module.exports = { readGame, writeGame, createGame };
-
 players,
 createdAt: Date.now(),
 revealed: false,
 loser: null,
 dare: '',
-question: null // {subject, text, kind:'yesno'|'open', options:['A','B','C'] (2-3 entries)}
+question: null // { subject, text, kind:'yesno'|'open', options:['A','B','C'] }
 };
 
-store.games[id] = game;
+await writeGame(game);
 return game;
-},
+}
 
-getGame(id) {
-return store.games[id] || null;
-},
-
-toState(game) {
+function toState(game) {
 return {
-gameId: game.id,
+gameId: game.gameId,
 names: game.players.map(p => p.name),
 tapped: game.players.filter(p => p.status !== 'up').map(p => p.name),
 pending: game.players.filter(p => p.status === 'pending').map(p => p.name),
@@ -67,6 +63,11 @@ loser: game.loser || null,
 question: game.question || null
 };
 }
-};
 
-module.exports = store;
+module.exports = {
+// keep the method names your other functions expect
+getGame: readGame,
+writeGame,
+createGame,
+toState
+};
